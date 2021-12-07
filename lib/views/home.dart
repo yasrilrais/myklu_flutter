@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:myklu_flutter/modal/api.dart';
 import 'package:myklu_flutter/modal/keluhanModel.dart';
@@ -145,15 +146,13 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text(
-          'Home',
+          'MyKlu',
           style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: Colors.white),
+              fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
         elevation: 0,
@@ -162,9 +161,10 @@ class _HomeState extends State<Home> {
           Padding(
             padding: EdgeInsets.only(right: 15.0),
             child: GestureDetector(
-              onTap: (){Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        Notifications()));},
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => Notifications()));
+              },
               child: Icon(
                 Iconsax.notification5,
                 size: 25.0,
@@ -174,203 +174,306 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Navigator.of(context).push(MaterialPageRoute(
-      //         builder: (context) => AddComplaint(_lihatData)));
-      //   },
-      // ),
-      body: RefreshIndicator(
-        onRefresh: _lihatData,
-        key: _refresh,
-        child: loading
-            ? Padding(
-              padding: const EdgeInsets.all(120.0),
-              child: Center(
-                  child: LoadingIndicator(
-                  indicatorType: Indicator.ballPulse,
-                  colors: _kDefaultRainbowColors,
-                  strokeWidth: 2,
-                )),
-            )
-            : FadeAnimation(
-                0.5,
-                ListView.builder(
-                  itemCount: list.length,
-                  itemBuilder: (context, i) {
-                    final x = list[i];
-                    // return Padding(
-                    //   padding: EdgeInsets.symmetric(
-                    //       horizontal: 20.0, vertical: 20.0),
-                    //   child: ExpansionTileCard(
-                    //     baseColor: Colors.cyan[50],
-                    //     expandedColor: Colors.red[50],
-                    //     key: _cardA,
-                    //     title: Text(x.createDate),
-                    //     subtitle: Text(x.tipe),
-                    //     children: <Widget>[
-                    //       Divider(
-                    //         thickness: 1.0,
-                    //         height: 1.0,
-                    //       ),
-                    //       Align(
-                    //         alignment: Alignment.centerLeft,
-                    //         child: Padding(
-                    //           padding: const EdgeInsets.symmetric(
-                    //             horizontal: 16.0,
-                    //             vertical: 8.0,
-                    //           ),
-                    //           child: Text(x.keluhan),
-                    //         ),
-                    //       ),
-                    //       ButtonBar(
-                    //         alignment: MainAxisAlignment.spaceAround,
-                    //         buttonHeight: 52.0,
-                    //         buttonMinWidth: 90.0,
-                    //         children: <Widget>[
-                    //           TextButton(
-                    //             style: TextButton.styleFrom(
-                    //               shape: const RoundedRectangleBorder(
-                    //                 borderRadius:
-                    //                     BorderRadius.all(Radius.circular(4.0)),
-                    //               ),
-                    //             ),
-                    //             onPressed: () {
-                    //               _cardA.currentState?.expand();
-                    //             },
-                    //             child: Column(
-                    //               children: [
-                    //                 Icon(Icons.arrow_downward),
-                    //                 Padding(
-                    //                   padding: const EdgeInsets.symmetric(
-                    //                       vertical: 2.0),
-                    //                 ),
-                    //                 Text('Open'),
-                    //               ],
-                    //             ),
-                    //           ),
-                    //           TextButton(style: TextButton.styleFrom(
-                    //               shape: const RoundedRectangleBorder(
-                    //                 borderRadius:
-                    //                     BorderRadius.all(Radius.circular(4.0)),
-                    //               ),
-                    //             ),
-                    //             onPressed: () {
-                    //               _cardA.currentState?.collapse();
-                    //             },
-                    //             child: Column(
-                    //               children: [
-                    //                 Icon(Icons.arrow_upward),
-                    //                 Padding(
-                    //                   padding: const EdgeInsets.symmetric(
-                    //                       vertical: 2.0),
-                    //                 ),
-                    //                 Text('Close'),
-                    //               ],
-                    //             ),
-                    //           ),
-                    //           TextButton(style: TextButton.styleFrom(
-                    //               shape: const RoundedRectangleBorder(
-                    //                 borderRadius:
-                    //                     BorderRadius.all(Radius.circular(4.0)),
-                    //               ),
-                    //               textStyle: TextStyle(color: Colors.red),
-                    //             ),
-                    //             onPressed: () {},
-                    //             child: Column(
-                    //               children: <Widget>[
-                    //                 Icon(Icons.swap_vert),
-                    //                 Padding(
-                    //                   padding: const EdgeInsets.symmetric(
-                    //                       vertical: 2.0),
-                    //                 ),
-                    //                 Text('Toggle'),
-                    //               ],
-                    //             ),
-                    //           )
-                    //         ],
-                    //       )
-                    //     ],
-                    //   ),
-                    // );
-                    return Container(
-                      margin: EdgeInsets.all(10.0),
-                      padding: EdgeInsets.all(10.0),
-                      height: 120,
+      // ----default---- //
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(bottom: 5.0),
+              height: size.height * 0.2,
+              child: Stack(
+                children: [
+                  Container(
+                      padding: EdgeInsets.all(18.0),
+                      height: size.height * 0.2 - 27,
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: SingleChildScrollView(
-                        child: Row(
-                          children: <Widget>[
-                            // Column(
-                            //   crossAxisAlignment: CrossAxisAlignment.start,
-                            //   children: [
-                            //     Text("Keluhan :"),
-                            //     SizedBox(height: 5),
-                            //     Text("Penerima :"),
-                            //     SizedBox(height: 5),
-                            //     Text("Status :"),
-                            //     SizedBox(height: 5),
-                            //     Text("Pengirim :")
-                            //   ],
-                            // ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    x.createDate,
-                                    style: TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(height: 5),
-                                  Text(
-                                    x.keluhan,
-                                    maxLines: 2,
-                                  ),
-                                  SizedBox(height: 5),
-                                  Text(x.penerima),
-                                  SizedBox(height: 5),
-                                  Text(x.stat),
-                                ],
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        EditKeluhan(x, _lihatData)));
-                              },
-                              icon: Icon(Icons.keyboard_arrow_right),
-                            ),
-                            // IconButton(
-                            //   onPressed: () {
-                            //     dialogDelete(x.id);
-                            //   },
-                            //   icon: Icon(Icons.delete),
-                            // ),
-                            Visibility(
-                              child: IconButton(
-                                onPressed: () {
-                                  dialogDelete(x.id);
-                                },
-                                icon: Icon(
-                                  Icons.delete,
-                                ),
-                              ),
-                              visible: false,
-                            ),
-                          ],
+                        color: Color(0xfff96060),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
                         ),
                       ),
-                    );
-                  },
-                ),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Welcome, User",
+                            style: TextStyle(
+                                fontSize: 23,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          )
+                        ],
+                      )),
+                ],
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: Row(
+                children: [
+                  Container(
+                    height: 24,
+                    child: Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4.0),
+                          child: Text(
+                            "History",
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            margin: EdgeInsets.only(right: 4.0),
+                            height: 7,
+                            color: Colors.black.withOpacity(0.1),
+                          )
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            RefreshIndicator(
+              backgroundColor: Colors.grey[200],
+              onRefresh: _lihatData,
+              key: _refresh,
+              child: loading
+                  ? Padding(
+                      padding: const EdgeInsets.all(120.0),
+                      child: Center(
+                          child: LoadingIndicator(
+                        indicatorType: Indicator.ballPulse,
+                        colors: _kDefaultRainbowColors,
+                        strokeWidth: 2,
+                      )),
+                    )
+                  : FadeAnimation(
+                      0.5,
+                      SizedBox(
+                        height: 376,
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          // shrinkWrap: true,
+                          itemCount: list.length,
+                          itemBuilder: (context, i) {
+                            final x = list[i];
+                            return Container(
+                              margin: EdgeInsets.all(10.0),
+                              padding: EdgeInsets.all(10.0),
+                              height: 120,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: SingleChildScrollView(
+                                child: Row(
+                                  children: <Widget>[
+                                    // Column(
+                                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                                    //   children: [
+                                    //     Text("Keluhan :"),
+                                    //     SizedBox(height: 5),
+                                    //     Text("Penerima :"),
+                                    //     SizedBox(height: 5),
+                                    //     Text("Status :"),
+                                    //     SizedBox(height: 5),
+                                    //     Text("Pengirim :")
+                                    //   ],
+                                    // ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            x.createDate,
+                                            style: TextStyle(
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(height: 5),
+                                          Text(
+                                            x.keluhan,
+                                            maxLines: 2,
+                                          ),
+                                          SizedBox(height: 5),
+                                          Text(x.penerima),
+                                          SizedBox(height: 5),
+                                          Text(x.stat),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    EditKeluhan(
+                                                        x, _lihatData)));
+                                      },
+                                      icon: Icon(Icons.keyboard_arrow_right),
+                                      alignment: Alignment.center,
+                                    ),
+                                    // IconButton(
+                                    //   onPressed: () {
+                                    //     dialogDelete(x.id);
+                                    //   },
+                                    //   icon: Icon(Icons.delete),
+                                    // ),
+                                    Visibility(
+                                      child: IconButton(
+                                        onPressed: () {
+                                          dialogDelete(x.id);
+                                        },
+                                        icon: Icon(
+                                          Icons.delete,
+                                        ),
+                                      ),
+                                      visible: false,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+            )
+          ],
+        ),
       ),
+      // backgroundColor: Colors.grey[200],
+      // appBar: AppBar(
+      //   title: Text(
+      //     'Home',
+      //     style: TextStyle(
+      //         fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
+      //   ),
+      //   centerTitle: true,
+      //   elevation: 0,
+      //   backgroundColor: Color(0xfff96060),
+      //   actions: [
+      //     Padding(
+      //       padding: EdgeInsets.only(right: 15.0),
+      //       child: GestureDetector(
+      //         onTap: () {
+      //           Navigator.of(context).push(
+      //               MaterialPageRoute(builder: (context) => Notifications()));
+      //         },
+      //         child: Icon(
+      //           Iconsax.notification5,
+      //           size: 25.0,
+      //           color: Colors.white,
+      //         ),
+      //       ),
+      //     )
+      //   ],
+      // ),
+      // body: RefreshIndicator(
+      //   onRefresh: _lihatData,
+      //   key: _refresh,
+      //   child: loading
+      //       ? Padding(
+      //         padding: const EdgeInsets.all(120.0),
+      //         child: Center(
+      //             child: LoadingIndicator(
+      //             indicatorType: Indicator.ballPulse,
+      //             colors: _kDefaultRainbowColors,
+      //             strokeWidth: 2,
+      //           )),
+      //       )
+      //       : FadeAnimation(
+      //           0.5,
+      //           ListView.builder(
+      //             itemCount: list.length,
+      //             itemBuilder: (context, i) {
+      //               final x = list[i];
+      //               return Container(
+      //                 margin: EdgeInsets.all(10.0),
+      //                 padding: EdgeInsets.all(10.0),
+      //                 height: 120,
+      //                 decoration: BoxDecoration(
+      //                   color: Colors.white,
+      //                   borderRadius: BorderRadius.circular(15),
+      //                 ),
+      //                 child: SingleChildScrollView(
+      //                   child: Row(
+      //                     children: <Widget>[
+      //                       // Column(
+      //                       //   crossAxisAlignment: CrossAxisAlignment.start,
+      //                       //   children: [
+      //                       //     Text("Keluhan :"),
+      //                       //     SizedBox(height: 5),
+      //                       //     Text("Penerima :"),
+      //                       //     SizedBox(height: 5),
+      //                       //     Text("Status :"),
+      //                       //     SizedBox(height: 5),
+      //                       //     Text("Pengirim :")
+      //                       //   ],
+      //                       // ),
+      //                       Expanded(
+      //                         child: Column(
+      //                           crossAxisAlignment: CrossAxisAlignment.start,
+      //                           children: <Widget>[
+      //                             Text(
+      //                               x.createDate,
+      //                               style: TextStyle(
+      //                                   fontSize: 18.0,
+      //                                   fontWeight: FontWeight.bold),
+      //                             ),
+      //                             SizedBox(height: 5),
+      //                             Text(
+      //                               x.keluhan,
+      //                               maxLines: 2,
+      //                             ),
+      //                             SizedBox(height: 5),
+      //                             Text(x.penerima),
+      //                             SizedBox(height: 5),
+      //                             Text(x.stat),
+      //                           ],
+      //                         ),
+      //                       ),
+      //                       IconButton(
+      //                         onPressed: () {
+      //                           Navigator.of(context).push(MaterialPageRoute(
+      //                               builder: (context) =>
+      //                                   EditKeluhan(x, _lihatData)));
+      //                         },
+      //                         icon: Icon(Icons.keyboard_arrow_right),
+      //                         alignment: Alignment.center,
+      //                       ),
+      //                       // IconButton(
+      //                       //   onPressed: () {
+      //                       //     dialogDelete(x.id);
+      //                       //   },
+      //                       //   icon: Icon(Icons.delete),
+      //                       // ),
+      //                       Visibility(
+      //                         child: IconButton(
+      //                           onPressed: () {
+      //                             dialogDelete(x.id);
+      //                           },
+      //                           icon: Icon(
+      //                             Icons.delete,
+      //                           ),
+      //                         ),
+      //                         visible: false,
+      //                       ),
+      //                     ],
+      //                   ),
+      //                 ),
+      //               );
+      //             },
+      //           ),
+      //         ),
+      // ),
+      // ----default---- //
     );
   }
 }

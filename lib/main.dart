@@ -157,7 +157,7 @@ class _LoginState extends State<Login> {
               decoration: BoxDecoration(
                   gradient: LinearGradient(begin: Alignment.topCenter, colors: [
                 Colors.red[700],
-                Colors.red,
+                Color(0xfff96060),
                 Colors.red[300]
               ])),
               child: Column(
@@ -289,7 +289,7 @@ class _LoginState extends State<Login> {
                                   margin: EdgeInsets.symmetric(horizontal: 50),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(50),
-                                      color: Colors.red),
+                                      color: Colors.redAccent),
                                   child: MaterialButton(
                                     onPressed: () {
                                       check();

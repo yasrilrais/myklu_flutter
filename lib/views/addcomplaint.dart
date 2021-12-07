@@ -172,7 +172,7 @@ class _AddComplaintState extends State<AddComplaint> {
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide:
                                         BorderSide(color: Colors.black54)),
-                                labelText: 'Complaint',
+                                labelText: 'Complaint...',
                                 labelStyle: TextStyle(color: Colors.grey)),
                           ),
                         ),
@@ -193,12 +193,29 @@ class _AddComplaintState extends State<AddComplaint> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 10.0,),
+                    SizedBox(
+                      height: 10.0,
+                    ),
                     FadeAnimation(
                       0.8,
                       Container(
                         width: double.infinity,
                         height: 100.0,
+                        // decoration: BoxDecoration(
+                        //   color: Color(0xFFF1F5F8),
+                        //   image: DecorationImage(
+                        //     fit: BoxFit.cover,
+                        //     image: Image.asset('./assets/placeholder.jpg').image,
+                        //   ),
+                        //   boxShadow: [
+                        //     BoxShadow(
+                        //       blurRadius: 6,
+                        //       color: Color(0x3A000000),
+                        //       offset: Offset(0, 2),
+                        //     )
+                        //   ],
+                        //   borderRadius: BorderRadius.circular(8),
+                        // ),
                         child: InkWell(
                           onTap: () {
                             _pilihGallery();
@@ -212,52 +229,9 @@ class _AddComplaintState extends State<AddComplaint> {
                         ),
                       ),
                     ),
-                    // Visibility(
-                    //   child: TextFormField(
-                    //   onSaved: (e)=>fakultas=e,
-                    //   decoration: InputDecoration(
-                    //     labelText: 'Fakultas'
-                    //   ),
-                    // ),
-                    // visible: false,
-                    // ),
-                    // Visibility(
-                    //   child: TextFormField(
-                    //   onSaved: (e)=>penerima=e,
-                    //   decoration: InputDecoration(
-                    //     labelText: 'Penerima'
-                    //   ),
-                    // ),
-                    // visible: false,
-                    // ),
-                    // ** tipe
-                    // FadeAnimation(0.7,
-                    // Padding(
-                    //   padding: const EdgeInsets.all(10.0),
-                    //   child: TextFormField(
-                    //     validator: (e) {
-                    //       if (e.isEmpty) {
-                    //         return "Please insert tipe";
-                    //       }
-                    //       return null;
-                    //     },
-                    //     onSaved: (e) => tipe = e,
-                    //     decoration: InputDecoration(
-                    //       floatingLabelStyle: TextStyle(color: Colors.blueGrey),
-                    //       enabledBorder: OutlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(20),
-                    //         borderSide: BorderSide(),
-                    //       ),
-                    //       focusedBorder: OutlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(20),
-                    //         borderSide: BorderSide(),
-                    //       ),
-                    //       labelText: 'Type',
-                    //     ),
-                    //   ),
-                    // ),
-                    // ),
-                    SizedBox(height: 10.0,),
+                    SizedBox(
+                      height: 10.0,
+                    ),
                     FadeAnimation(
                       0.7,
                       Column(
