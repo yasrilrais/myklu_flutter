@@ -100,10 +100,29 @@ class _AddComplaintState extends State<AddComplaint> {
 
   @override
   Widget build(BuildContext context) {
-    var placeholder = Container(
-      width: double.infinity,
-      height: 150.0,
-      child: Image.asset('./assets/placeholder.jpg'),
+    var placeholder = Padding(
+      padding:
+          EdgeInsets.only(bottom: 10.0, right: 40.0, left: 40.0, top: 10.0),
+      child: Container(
+        width: 30.0,
+        height: 100.0,
+        decoration: BoxDecoration(
+          color: Color(0xFFF1F5F8),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: Image.asset('./assets/placeholder.jpg').image,
+          ),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 6,
+              color: Color(0x3A000000),
+              offset: Offset(0, 2),
+            )
+          ],
+          borderRadius: BorderRadius.circular(8),
+        ),
+        // child: Image.asset('./assets/placeholder.jpg'),
+      ),
     );
     return Scaffold(
       backgroundColor: Colors.white,
@@ -115,7 +134,17 @@ class _AddComplaintState extends State<AddComplaint> {
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Color(0xfff96060),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                Colors.red[600],
+                Color(0xfff96060),
+                Colors.red[300]
+              ])),
+        ),
         foregroundColor: Colors.white,
       ),
       body: Container(
@@ -124,7 +153,15 @@ class _AddComplaintState extends State<AddComplaint> {
           children: [
             Container(
               height: 30,
-              color: Color(0xfff96060),
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                    Colors.red[600],
+                    Color(0xfff96060),
+                    Colors.red[300]
+                  ])),
             ),
             Positioned(
               bottom: 0,
@@ -186,7 +223,7 @@ class _AddComplaintState extends State<AddComplaint> {
                             width: 10.0,
                           ),
                           Text(
-                            "Upload File :",
+                            "Upload File * :",
                             textAlign: TextAlign.left,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
@@ -199,23 +236,8 @@ class _AddComplaintState extends State<AddComplaint> {
                     FadeAnimation(
                       0.8,
                       Container(
-                        width: double.infinity,
-                        height: 100.0,
-                        // decoration: BoxDecoration(
-                        //   color: Color(0xFFF1F5F8),
-                        //   image: DecorationImage(
-                        //     fit: BoxFit.cover,
-                        //     image: Image.asset('./assets/placeholder.jpg').image,
-                        //   ),
-                        //   boxShadow: [
-                        //     BoxShadow(
-                        //       blurRadius: 6,
-                        //       color: Color(0x3A000000),
-                        //       offset: Offset(0, 2),
-                        //     )
-                        //   ],
-                        //   borderRadius: BorderRadius.circular(8),
-                        // ),
+                        width: 30.0,
+                        height: 150.0,
                         child: InkWell(
                           onTap: () {
                             _pilihGallery();
@@ -285,34 +307,6 @@ class _AddComplaintState extends State<AddComplaint> {
                         ],
                       ),
                     ),
-                    // **
-                    // Visibility(
-                    //   child: TextFormField(
-                    //   onSaved: (e)=>tindakan=e,
-                    //   decoration: InputDecoration(
-                    //     labelText: 'Tindakan'
-                    //   ),
-                    // ),
-                    // visible: false,
-                    // ),
-                    // Visibility(
-                    //   child: TextFormField(
-                    //   onSaved: (e)=>stat=e,
-                    //   decoration: InputDecoration(
-                    //     labelText: 'Status'
-                    //   ),
-                    // ),
-                    // visible: false,
-                    // ),
-                    // Visibility(
-                    //   child: TextFormField(
-                    //   onSaved: (e)=>feedback=e,
-                    //   decoration: InputDecoration(
-                    //     labelText: 'Feedback'
-                    //   ),
-                    // ),
-                    // visible: false,
-                    // ),
                     FadeAnimation(
                       0.5,
                       Padding(

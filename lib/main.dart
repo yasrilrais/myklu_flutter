@@ -155,11 +155,16 @@ class _LoginState extends State<Login> {
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                  gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-                Colors.red[700],
-                Color(0xfff96060),
-                Colors.red[300]
-              ])),
+                  image: DecorationImage(
+                    image: AssetImage("assets/gkuedit.jpg"),
+                    fit: BoxFit.cover,
+                  ),
+                  // gradient: LinearGradient(begin: Alignment.topCenter, colors: [
+                  //   Colors.red[700],
+                  //   Color(0xfff96060),
+                  //   Colors.red[300]
+                  // ])
+                  ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -503,7 +508,6 @@ class _MainMenuState extends State<MainMenu> {
       GlobalKey<RefreshIndicatorState>();
   // final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
 
-  
   Future<void> _lihatData() async {
     var url = Uri.parse(BaseUrl.lihatKeluhan + idUsers);
     list.clear();
@@ -557,9 +561,7 @@ class _MainMenuState extends State<MainMenu> {
   }
 
   int currentTab = 0; // to keep track of active tab index
-  final List<Widget> screens = [
-    Home()
-  ]; // to store nested tabs
+  final List<Widget> screens = [Home()]; // to store nested tabs
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = Home();
 
@@ -573,8 +575,14 @@ class _MainMenuState extends State<MainMenu> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.red,
-        label: const Text('Complaint', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-        icon: const Icon(Icons.add, color: Colors.white,),
+        label: const Text(
+          'Complaint',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        icon: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => AddComplaint(_lihatData)));
@@ -605,21 +613,26 @@ class _MainMenuState extends State<MainMenu> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Icon( currentTab == 0 ? Iconsax.home5 : Iconsax.home, color: Colors.white,
+                        Icon(
+                          currentTab == 0 ? Iconsax.home5 : Iconsax.home,
+                          color: Colors.white,
                         ),
                         SizedBox(height: 3.0),
                         Text(
                           'Home',
                           style: TextStyle(
-                              color:
-                                  currentTab == 0 ? Colors.white : Colors.white,),
+                            color:
+                                currentTab == 0 ? Colors.white : Colors.white,
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ],
               ),
-              SizedBox(width: 1.0,),
+              SizedBox(
+                width: 1.0,
+              ),
 
               // Right Tab bar icons
 
@@ -639,13 +652,17 @@ class _MainMenuState extends State<MainMenu> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          currentTab == 0 ? Iconsax.profile_circle : Iconsax.profile_circle5, color: Colors.white,
+                          currentTab == 0
+                              ? Iconsax.profile_circle
+                              : Iconsax.profile_circle5,
+                          color: Colors.white,
                         ),
                         SizedBox(height: 3.0),
                         Text(
                           'Profile',
                           style: TextStyle(
-                            color: currentTab == 1 ? Colors.white : Colors.white,
+                            color:
+                                currentTab == 1 ? Colors.white : Colors.white,
                           ),
                         ),
                       ],

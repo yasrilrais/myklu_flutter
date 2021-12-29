@@ -15,6 +15,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:myklu_flutter/animation/FadeAnimation.dart';
 import 'package:myklu_flutter/views/notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 // import 'package:expansion_tile_card/expansion_tile_card.dart';
 
 class Home extends StatefulWidget {
@@ -39,11 +40,15 @@ class _HomeState extends State<Home> {
   // final GlobalKey<ExpansionTileCardState> _cardA = new GlobalKey();
 
   String idUsers;
+  String nama = "";
+  String nim = "";
 
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       idUsers = preferences.getString("id");
+      nama = preferences.getString("nama");
+      nim = preferences.getString("nim");
     });
     _lihatData();
   }
@@ -154,9 +159,19 @@ class _HomeState extends State<Home> {
           style: TextStyle(
               fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
         ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                Colors.red[600],
+                Color(0xfff96060),
+                Colors.red[300]
+              ])),
+        ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Color(0xfff96060),
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 15.0),
@@ -187,7 +202,14 @@ class _HomeState extends State<Home> {
                       padding: EdgeInsets.all(18.0),
                       height: size.height * 0.2 - 27,
                       decoration: BoxDecoration(
-                        color: Color(0xfff96060),
+                        gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [
+                              Colors.red[600],
+                              Color(0xfff96060),
+                              Colors.red[300]
+                            ]),
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(20),
                           bottomRight: Radius.circular(20),
@@ -195,13 +217,16 @@ class _HomeState extends State<Home> {
                       ),
                       child: Row(
                         children: [
-                          Text(
-                            "Welcome, User",
-                            style: TextStyle(
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          )
+                          Flexible(
+                            child: Text(
+                              "Welcome, $nama",
+                              style: TextStyle(
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                              maxLines: 1,
+                            ),
+                          ),
                         ],
                       )),
                 ],
@@ -218,20 +243,20 @@ class _HomeState extends State<Home> {
                         Padding(
                           padding: const EdgeInsets.only(left: 4.0),
                           child: Text(
-                            "History",
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            "Complaint History",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                         ),
                         Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            margin: EdgeInsets.only(right: 4.0),
-                            height: 7,
-                            color: Colors.black.withOpacity(0.1),
-                          )
-                        ),
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              margin: EdgeInsets.only(right: 4.0),
+                              height: 7,
+                              color: Colors.black.withOpacity(0.1),
+                            )),
                       ],
                     ),
                   ),
@@ -243,6 +268,100 @@ class _HomeState extends State<Home> {
               onRefresh: _lihatData,
               key: _refresh,
               child: loading
+                  // ? Shimmer.fromColors(
+                  //     baseColor: Colors.grey[300],
+                  //     highlightColor: Colors.grey[100],
+                  //     child: 
+                  //     ) :SizedBox(
+                  //       height: 376,
+                  //       child: ListView.builder(
+                  //         scrollDirection: Axis.vertical,
+                  //         // shrinkWrap: true,
+                  //         itemCount: list.length,
+                  //         itemBuilder: (context, i) {
+                  //           final x = list[i];
+                  //           return Container(
+                  //             margin: EdgeInsets.all(10.0),
+                  //             padding: EdgeInsets.all(10.0),
+                  //             height: 120,
+                  //             decoration: BoxDecoration(
+                  //               color: Colors.white,
+                  //               borderRadius: BorderRadius.circular(15),
+                  //             ),
+                  //             child: SingleChildScrollView(
+                  //               child: Row(
+                  //                 children: <Widget>[
+                  //                   // Column(
+                  //                   //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //                   //   children: [
+                  //                   //     Text("Keluhan :"),
+                  //                   //     SizedBox(height: 5),
+                  //                   //     Text("Penerima :"),
+                  //                   //     SizedBox(height: 5),
+                  //                   //     Text("Status :"),
+                  //                   //     SizedBox(height: 5),
+                  //                   //     Text("Pengirim :")
+                  //                   //   ],
+                  //                   // ),
+                  //                   Expanded(
+                  //                     child: Column(
+                  //                       crossAxisAlignment:
+                  //                           CrossAxisAlignment.start,
+                  //                       children: <Widget>[
+                  //                         Text(
+                  //                           x.createDate,
+                  //                           style: TextStyle(
+                  //                               fontSize: 18.0,
+                  //                               fontWeight: FontWeight.bold),
+                  //                         ),
+                  //                         SizedBox(height: 5),
+                  //                         Text(
+                  //                           x.keluhan,
+                  //                           maxLines: 1,
+                  //                           overflow: TextOverflow.ellipsis,
+                  //                         ),
+                  //                         SizedBox(height: 5),
+                  //                         Text(x.penerima),
+                  //                         SizedBox(height: 5),
+                  //                         Text(x.stat),
+                  //                       ],
+                  //                     ),
+                  //                   ),
+                  //                   IconButton(
+                  //                     onPressed: () {
+                  //                       Navigator.of(context).push(
+                  //                           MaterialPageRoute(
+                  //                               builder: (context) =>
+                  //                                   EditKeluhan(
+                  //                                       x, _lihatData)));
+                  //                     },
+                  //                     icon: Icon(Icons.keyboard_arrow_right),
+                  //                     alignment: Alignment.center,
+                  //                   ),
+                  //                   // IconButton(
+                  //                   //   onPressed: () {
+                  //                   //     dialogDelete(x.id);
+                  //                   //   },
+                  //                   //   icon: Icon(Icons.delete),
+                  //                   // ),
+                  //                   Visibility(
+                  //                     child: IconButton(
+                  //                       onPressed: () {
+                  //                         dialogDelete(x.id);
+                  //                       },
+                  //                       icon: Icon(
+                  //                         Icons.delete,
+                  //                       ),
+                  //                     ),
+                  //                     visible: false,
+                  //                   ),
+                  //                 ],
+                  //               ),
+                  //             ),
+                  //           );
+                  //         },
+                  //       ),
+                  //     ),
                   ? Padding(
                       padding: const EdgeInsets.all(120.0),
                       child: Center(
@@ -251,7 +370,7 @@ class _HomeState extends State<Home> {
                         colors: _kDefaultRainbowColors,
                         strokeWidth: 2,
                       )),
-                    )
+                    ) 
                   : FadeAnimation(
                       0.5,
                       SizedBox(
@@ -299,7 +418,8 @@ class _HomeState extends State<Home> {
                                           SizedBox(height: 5),
                                           Text(
                                             x.keluhan,
-                                            maxLines: 2,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                           SizedBox(height: 5),
                                           Text(x.penerima),
@@ -344,6 +464,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                     ),
+                  
             )
           ],
         ),

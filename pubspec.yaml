@@ -37,6 +37,7 @@ dependencies:
   google_fonts: ^2.1.0
   expansion_tile_card: ^2.0.0
   bouncing_widget: ^2.0.0
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +59,7 @@ flutter:
     - assets/telu.jpg
     - assets/placeholder.jpg
     - assets/user.png
+    - assets/gkuedit.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

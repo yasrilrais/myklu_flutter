@@ -73,7 +73,21 @@ class _EditKeluhanState extends State<EditKeluhan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar:AppBar(
+        centerTitle: true,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                Colors.red[600],
+                Color(0xfff96060),
+                Colors.red[300]
+              ])),
+        ),
+      ),
       body: Form(
         key: _key,
         child: ListView(

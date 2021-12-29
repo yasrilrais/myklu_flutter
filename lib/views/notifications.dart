@@ -31,12 +31,21 @@ class _NotificationsState extends State<Notifications> {
           style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,
-              color: Colors.blueGrey),
+              color: Colors.white),
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.blueGrey,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                Colors.red[600],
+                Color(0xfff96060),
+                Colors.red[300]
+              ])),
+        ),
       ),
     body: Padding(
       padding: const EdgeInsets.all(8.0),

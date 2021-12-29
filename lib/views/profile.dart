@@ -89,7 +89,17 @@ class _ProfileState extends State<Profile> {
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Color(0xfff96060),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                Colors.red[600],
+                Color(0xfff96060),
+                Colors.red[300]
+              ])),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -110,26 +120,29 @@ class _ProfileState extends State<Profile> {
                   SizedBox(
                     width: 15,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      FadeAnimation(
-                          1,
-                          Text(
-                            '$nama',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          )),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      FadeAnimation(
-                          1,
-                          Text(
-                            "$nim",
-                            style: TextStyle(color: Colors.grey, fontSize: 14),
-                          )),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FadeAnimation(
+                            1,
+                            Text(
+                              '$nama',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                                  maxLines: 1,
+                            )),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        FadeAnimation(
+                            1,
+                            Text(
+                              "$nim",
+                              style: TextStyle(color: Colors.grey, fontSize: 14),
+                            )),
+                      ],
+                    ),
                   ),
                   // Expanded(
                   //   child: Align(
