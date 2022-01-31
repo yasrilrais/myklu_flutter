@@ -268,100 +268,6 @@ class _HomeState extends State<Home> {
               onRefresh: _lihatData,
               key: _refresh,
               child: loading
-                  // ? Shimmer.fromColors(
-                  //     baseColor: Colors.grey[300],
-                  //     highlightColor: Colors.grey[100],
-                  //     child: 
-                  //     ) :SizedBox(
-                  //       height: 376,
-                  //       child: ListView.builder(
-                  //         scrollDirection: Axis.vertical,
-                  //         // shrinkWrap: true,
-                  //         itemCount: list.length,
-                  //         itemBuilder: (context, i) {
-                  //           final x = list[i];
-                  //           return Container(
-                  //             margin: EdgeInsets.all(10.0),
-                  //             padding: EdgeInsets.all(10.0),
-                  //             height: 120,
-                  //             decoration: BoxDecoration(
-                  //               color: Colors.white,
-                  //               borderRadius: BorderRadius.circular(15),
-                  //             ),
-                  //             child: SingleChildScrollView(
-                  //               child: Row(
-                  //                 children: <Widget>[
-                  //                   // Column(
-                  //                   //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //                   //   children: [
-                  //                   //     Text("Keluhan :"),
-                  //                   //     SizedBox(height: 5),
-                  //                   //     Text("Penerima :"),
-                  //                   //     SizedBox(height: 5),
-                  //                   //     Text("Status :"),
-                  //                   //     SizedBox(height: 5),
-                  //                   //     Text("Pengirim :")
-                  //                   //   ],
-                  //                   // ),
-                  //                   Expanded(
-                  //                     child: Column(
-                  //                       crossAxisAlignment:
-                  //                           CrossAxisAlignment.start,
-                  //                       children: <Widget>[
-                  //                         Text(
-                  //                           x.createDate,
-                  //                           style: TextStyle(
-                  //                               fontSize: 18.0,
-                  //                               fontWeight: FontWeight.bold),
-                  //                         ),
-                  //                         SizedBox(height: 5),
-                  //                         Text(
-                  //                           x.keluhan,
-                  //                           maxLines: 1,
-                  //                           overflow: TextOverflow.ellipsis,
-                  //                         ),
-                  //                         SizedBox(height: 5),
-                  //                         Text(x.penerima),
-                  //                         SizedBox(height: 5),
-                  //                         Text(x.stat),
-                  //                       ],
-                  //                     ),
-                  //                   ),
-                  //                   IconButton(
-                  //                     onPressed: () {
-                  //                       Navigator.of(context).push(
-                  //                           MaterialPageRoute(
-                  //                               builder: (context) =>
-                  //                                   EditKeluhan(
-                  //                                       x, _lihatData)));
-                  //                     },
-                  //                     icon: Icon(Icons.keyboard_arrow_right),
-                  //                     alignment: Alignment.center,
-                  //                   ),
-                  //                   // IconButton(
-                  //                   //   onPressed: () {
-                  //                   //     dialogDelete(x.id);
-                  //                   //   },
-                  //                   //   icon: Icon(Icons.delete),
-                  //                   // ),
-                  //                   Visibility(
-                  //                     child: IconButton(
-                  //                       onPressed: () {
-                  //                         dialogDelete(x.id);
-                  //                       },
-                  //                       icon: Icon(
-                  //                         Icons.delete,
-                  //                       ),
-                  //                     ),
-                  //                     visible: false,
-                  //                   ),
-                  //                 ],
-                  //               ),
-                  //             ),
-                  //           );
-                  //         },
-                  //       ),
-                  //     ),
                   ? Padding(
                       padding: const EdgeInsets.all(120.0),
                       child: Center(
@@ -370,7 +276,7 @@ class _HomeState extends State<Home> {
                         colors: _kDefaultRainbowColors,
                         strokeWidth: 2,
                       )),
-                    ) 
+                    )
                   : FadeAnimation(
                       0.5,
                       SizedBox(
@@ -428,33 +334,34 @@ class _HomeState extends State<Home> {
                                         ],
                                       ),
                                     ),
-                                    IconButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    EditKeluhan(
-                                                        x, _lihatData)));
-                                      },
-                                      icon: Icon(Icons.keyboard_arrow_right),
-                                      alignment: Alignment.center,
-                                    ),
-                                    // IconButton(
-                                    //   onPressed: () {
-                                    //     dialogDelete(x.id);
-                                    //   },
-                                    //   icon: Icon(Icons.delete),
-                                    // ),
-                                    Visibility(
-                                      child: IconButton(
-                                        onPressed: () {
-                                          dialogDelete(x.id);
-                                        },
-                                        icon: Icon(
-                                          Icons.delete,
+                                    SizedBox(width: 1),
+                                    Column(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        EditKeluhan(
+                                                            x, _lihatData)));
+                                          },
+                                          icon: Icon(Icons.message),
+                                          alignment: Alignment.topRight,
                                         ),
-                                      ),
-                                      visible: false,
+                                        Visibility(
+                                          child: IconButton(
+                                            onPressed: () {
+                                              dialogDelete(x.id);
+                                            },
+                                            icon: Icon(
+                                              Icons.done_outline,
+                                              semanticLabel: 'Closed Ticket',
+                                            ),
+                                            alignment: Alignment.bottomRight,
+                                          ),
+                                          visible: true,
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -464,7 +371,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                     ),
-                  
+
             )
           ],
         ),

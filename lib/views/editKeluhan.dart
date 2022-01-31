@@ -101,13 +101,16 @@ class _EditKeluhanState extends State<EditKeluhan> {
                 labelText: 'Keluhan'
               ),
             ),
-            TextFormField(
-              enabled: false,
-              controller: txtFakultas,
-              onSaved: (e)=>fakultas=e,
-              decoration: InputDecoration(
-                labelText: 'Fakultas'
+            Visibility(
+              child: TextFormField(
+                enabled: false,
+                controller: txtFakultas,
+                onSaved: (e)=>fakultas=e,
+                decoration: InputDecoration(
+                  labelText: 'Fakultas'
+                ),
               ),
+              visible: false,
             ),
             TextFormField(
               enabled: false,
@@ -117,13 +120,16 @@ class _EditKeluhanState extends State<EditKeluhan> {
                 labelText: 'Penerima'
               ),
             ),
-            TextFormField(
-              enabled: false,
-              controller: txtTipe,
-              onSaved: (e)=>tipe=e,
-              decoration: InputDecoration(
-                labelText: 'Tipe'
+            Visibility(
+              child: TextFormField(
+                enabled: false,
+                controller: txtTipe,
+                onSaved: (e)=>tipe=e,
+                decoration: InputDecoration(
+                  labelText: 'Tipe'
+                ),
               ),
+              visible: false,
             ),
             TextFormField(
               enabled: false,
