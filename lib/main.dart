@@ -7,16 +7,34 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:myklu_flutter/animation/FadeAnimation.dart';
 import 'package:myklu_flutter/modal/api.dart';
-import 'package:myklu_flutter/modal/keluhanModel.dart';
 import 'package:myklu_flutter/views/addcomplaint.dart';
 import 'package:myklu_flutter/views/home.dart';
+import 'package:myklu_flutter/views/notifications.dart';
 import 'package:myklu_flutter/views/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:myklu_flutter/animation/launcher.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 void main() {
   runApp(MyApp());
+  configLoading();
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.green
+    ..indicatorColor = Colors.yellow
+    ..textColor = Colors.yellow
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = true
+    ..dismissOnTap = false;
+    //..customAnimation = CustomAnimation();
 }
 
 class MyApp extends StatelessWidget {
@@ -24,6 +42,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: SplashScreen(),
+      builder: EasyLoading.init(),
       theme: ThemeData(
           primarySwatch: Colors.blueGrey,
           fontFamily: 'roboto',
@@ -155,16 +174,16 @@ class _LoginState extends State<Login> {
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/gkuedit.jpg"),
-                    fit: BoxFit.cover,
-                  ),
-                  // gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-                  //   Colors.red[700],
-                  //   Color(0xfff96060),
-                  //   Colors.red[300]
-                  // ])
-                  ),
+                image: DecorationImage(
+                  image: AssetImage("assets/gkuedit.jpg"),
+                  fit: BoxFit.cover,
+                ),
+                // gradient: LinearGradient(begin: Alignment.topCenter, colors: [
+                //   Colors.red[700],
+                //   Color(0xfff96060),
+                //   Colors.red[300]
+                // ])
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -488,56 +507,21 @@ class _RegisterState extends State<Register> {
 class MainMenu extends StatefulWidget {
   final VoidCallback signOut;
   MainMenu(this.signOut);
+
   @override
   _MainMenuState createState() => _MainMenuState();
 }
 
 class _MainMenuState extends State<MainMenu> {
-  signOut() {
+    signOut() {
     setState(() {
       widget.signOut();
     });
   }
+  Timer _timer;
 
   String idUsers;
   var loading = false;
-
-  // ignore: deprecated_member_use
-  final list = new List<KeluhanModel>();
-  final GlobalKey<RefreshIndicatorState> _refresh =
-      GlobalKey<RefreshIndicatorState>();
-  // final GlobalKey<ExpansionTileCardState> cardA = new GlobalKey();
-
-  Future<void> _lihatData() async {
-    var url = Uri.parse(BaseUrl.lihatKeluhan + idUsers);
-    list.clear();
-    setState(() {
-      loading = true;
-    });
-    final response = await http.get(url);
-    if (response.contentLength == 2) {
-    } else {
-      final data = jsonDecode(response.body);
-      data.forEach((api) {
-        final ab = new KeluhanModel(
-          api['id'],
-          api['keluhan'],
-          api['fakultas'],
-          api['penerima'],
-          api['tipe'],
-          api['tindakan'],
-          api['stat'],
-          api['feedback'],
-          api['createDate'],
-          api['idUsers'],
-        );
-        list.add(ab);
-      });
-      setState(() {
-        loading = false;
-      });
-    }
-  }
 
   String nama = "";
   String nim = "";
@@ -550,7 +534,6 @@ class _MainMenuState extends State<MainMenu> {
       nim = preferences.getString("nim");
       idUsers = preferences.getString("id");
     });
-    _lihatData();
   }
 
   @override
@@ -558,164 +541,437 @@ class _MainMenuState extends State<MainMenu> {
     // TODO: implement initState
     super.initState();
     getPref();
+    EasyLoading.addStatusCallback((status) {
+      print('EasyLoading Status $status');
+      if (status == EasyLoadingStatus.dismiss) {
+        _timer?.cancel();
+      }
+    });
+    //EasyLoading.showSuccess('Use in initState');
   }
-
-  int currentTab = 0; // to keep track of active tab index
-  final List<Widget> screens = [Home()]; // to store nested tabs
-  final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = Home();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
-      body: PageStorage(
-        child: currentScreen,
-        bucket: bucket,
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.red,
-        label: const Text(
-          'Complaint',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        icon: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => AddComplaint(_lihatData)));
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.grey[900],
-        // shape: CircularNotchedRectangle(),
-        // notchMargin: 1,
-        child: Container(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen =
-                            Home(); // if user taps on this dashboard tab will be active
-                        currentTab = 0;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          currentTab == 0 ? Iconsax.home5 : Iconsax.home,
-                          color: Colors.white,
-                        ),
-                        SizedBox(height: 3.0),
-                        Text(
-                          'Home',
-                          style: TextStyle(
-                            color:
-                                currentTab == 0 ? Colors.white : Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                width: 1.0,
-              ),
-
-              // Right Tab bar icons
-
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = Profile(
-                            signOut); // if user taps on this dashboard tab will be active
-                        currentTab = 1;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          currentTab == 0
-                              ? Iconsax.profile_circle
-                              : Iconsax.profile_circle5,
-                          color: Colors.white,
-                        ),
-                        SizedBox(height: 3.0),
-                        Text(
-                          'Profile',
-                          style: TextStyle(
-                            color:
-                                currentTab == 1 ? Colors.white : Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+      backgroundColor: Color(0xfff8f8f8),
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.43,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.red[400],
+                child: Container(
+                  margin: EdgeInsets.only(right: 120, top: 20, bottom: 20),
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/path.png'),
+                          fit: BoxFit.contain)),
+                ),
               )
             ],
           ),
-        ),
+          Column(
+            children: [
+              SizedBox(
+                height: 30,
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(15),
+                child: Text(
+                  "MyKlu",
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+              )
+            ],
+          ),
+          Column(
+            children: [
+              SizedBox(
+                height: 100,
+              ),
+              Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          "Welcome, \n$nama",
+                          style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.w200,
+                              color: Colors.white),
+                          maxLines: 2,
+                        ),
+                      ),
+                    ],
+                  )),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(40))),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Expanded(
+                child: GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 10, right: 10, bottom: 20),
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 20,
+                              spreadRadius: 1,
+                              offset: Offset(0, 10),
+                            )
+                          ]),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => AddComplaint()));
+                        },
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage('assets/file.png'),
+                                        alignment: Alignment.center,
+                                        fit: BoxFit.contain)),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                "Input Complaint",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10, right: 10, bottom: 20),
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 20,
+                              spreadRadius: 1,
+                              offset: Offset(0, 10),
+                            )
+                          ]),
+                      child: InkWell(
+                        onTap: () {Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Home()));},
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage('assets/repeat.png'),
+                                        alignment: Alignment.center,
+                                        fit: BoxFit.contain)),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                "History",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10, right: 10, bottom: 20),
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 20,
+                              spreadRadius: 1,
+                              offset: Offset(0, 10),
+                            )
+                          ]),
+                      child: InkWell(
+                        onTap: () {Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Profile(signOut)));},
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage('assets/user1.png'),
+                                        alignment: Alignment.center,
+                                        fit: BoxFit.contain)),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                "Profile",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 10, right: 10, bottom: 20),
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 20,
+                              spreadRadius: 1,
+                              offset: Offset(0, 10),
+                            )
+                          ]),
+                      child: InkWell(
+                        onTap: () {Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Notifications()));},
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage('assets/bell.png'),
+                                        alignment: Alignment.center,
+                                        fit: BoxFit.contain)),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(20),
+                              child: Text(
+                                "Notifications",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Container(
+              //   height: 70,
+              //   padding: EdgeInsets.symmetric(vertical: 10),
+              //   color: Colors.black.withOpacity(0.8),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //     children: [],
+              //   ),
+              // )
+            ],
+          )
+        ],
       ),
     );
   }
-}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return DefaultTabController(
-//       length: 2,
-//       child: Scaffold(
-//         appBar: AppBar(
-//             // actions: <Widget>[
-//             //   IconButton(
-//             //     onPressed: () {
-//             //       signOut();
-//             //     },
-//             //     icon: Icon(Icons.lock_open),
-//             //   )
-//             // ],
-//             ),
-//         body: TabBarView(
+// @override
+// Widget build(BuildContext context) {
+//   return Scaffold(
+//     backgroundColor: Colors.grey[200],
+//     body: PageStorage(
+//       child: currentScreen,
+//       bucket: bucket,
+//     ),
+//     floatingActionButton: FloatingActionButton.extended(
+//       backgroundColor: Colors.red,
+//       label: const Text(
+//         'Complaint',
+//         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+//       ),
+//       icon: const Icon(
+//         Icons.add,
+//         color: Colors.white,
+//       ),
+//       onPressed: () {
+//         Navigator.of(context).push(MaterialPageRoute(
+//             builder: (context) => AddComplaint(_lihatData)));
+//       },
+//     ),
+//     floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+//     bottomNavigationBar: BottomAppBar(
+//       color: Colors.grey[900],
+//       // shape: CircularNotchedRectangle(),
+//       // notchMargin: 1,
+//       child: Container(
+//         height: 60,
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceAround,
 //           children: <Widget>[
-//             Home(),
-//             Profile(signOut),
-//           ],
-//         ),
-//         bottomNavigationBar: TabBar(
-//           labelColor: Colors.blue,
-//           unselectedLabelColor: Colors.black,
-//           indicator: UnderlineTabIndicator(
-//               borderSide: BorderSide(style: BorderStyle.none)),
-//           tabs: <Widget>[
-//             Tab(
-//               icon: Icon(Icons.home),
-//               text: "Home",
+//             Row(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: <Widget>[
+//                 MaterialButton(
+//                   minWidth: 40,
+//                   onPressed: () {
+//                     setState(() {
+//                       currentScreen =
+//                           Home(); // if user taps on this dashboard tab will be active
+//                       currentTab = 0;
+//                     });
+//                   },
+//                   child: Column(
+//                     mainAxisAlignment: MainAxisAlignment.center,
+//                     children: <Widget>[
+//                       Icon(
+//                         currentTab == 0 ? Iconsax.home5 : Iconsax.home,
+//                         color: Colors.white,
+//                       ),
+//                       SizedBox(height: 3.0),
+//                       Text(
+//                         'Home',
+//                         style: TextStyle(
+//                           color:
+//                               currentTab == 0 ? Colors.white : Colors.white,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               ],
 //             ),
-//             Tab(
-//               icon: Icon(Icons.account_circle),
-//               text: "Profile",
+//             SizedBox(
+//               width: 1.0,
+//             ),
+
+//             // Right Tab bar icons
+
+//             Row(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: <Widget>[
+//                 MaterialButton(
+//                   minWidth: 40,
+//                   onPressed: () {
+//                     setState(() {
+//                       currentScreen = Profile(
+//                           signOut); // if user taps on this dashboard tab will be active
+//                       currentTab = 1;
+//                     });
+//                   },
+//                   child: Column(
+//                     mainAxisAlignment: MainAxisAlignment.center,
+//                     children: <Widget>[
+//                       Icon(
+//                         currentTab == 0
+//                             ? Iconsax.profile_circle
+//                             : Iconsax.profile_circle5,
+//                         color: Colors.white,
+//                       ),
+//                       SizedBox(height: 3.0),
+//                       Text(
+//                         'Profile',
+//                         style: TextStyle(
+//                           color:
+//                               currentTab == 1 ? Colors.white : Colors.white,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               ],
 //             )
 //           ],
 //         ),
 //       ),
-//     );
-//   }
+//     ),
+//   );
 // }
+}

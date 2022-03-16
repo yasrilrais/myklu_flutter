@@ -23,6 +23,7 @@ class _ProfileState extends State<Profile> {
   signOut() {
     setState(() {
       widget.signOut();
+      Navigator.pop(context);
     });
   }
 

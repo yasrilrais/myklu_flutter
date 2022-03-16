@@ -6,17 +6,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:myklu_flutter/animation/FadeAnimation.dart';
-import 'package:myklu_flutter/main.dart';
 import 'package:myklu_flutter/modal/api.dart';
-import 'package:myklu_flutter/views/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:async/async.dart';
 import 'package:path/path.dart' as path;
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class AddComplaint extends StatefulWidget {
-  final VoidCallback reload;
-  AddComplaint(this.reload);
   @override
   _AddComplaintState createState() => _AddComplaintState();
 }
@@ -71,17 +68,18 @@ class _AddComplaintState extends State<AddComplaint> {
       request.fields['keluhan'] = keluhan;
       request.fields['tipe'] = tipe;
       request.fields['idUsers'] = idUsers;
-
       request.files.add(http.MultipartFile("image", stream, length,
           filename: path.basename(_imageFile.path)));
+      EasyLoading.show(status: 'loading...');
       var response = await request.send();
       if (response.statusCode > 2) {
+        EasyLoading.showSuccess('Upload Success!');
         print("image upload");
         setState(() {
-          widget.reload();
           // Navigator.of(context).push(MaterialPageRoute(
           //     builder: (context) => MainMenu()));
           Navigator.pop(context);
+          EasyLoading.dismiss();
         });
       } else {
         print("image failed");
