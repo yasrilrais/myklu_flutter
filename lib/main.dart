@@ -17,14 +17,44 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+
+Future<void> _handleBGNotification(RemoteMessage message) async {
+  print("Background Notification Listening");
+  print(message.notification.title);
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  await requestPermission();
+  FirebaseMessaging.onBackgroundMessage(_handleBGNotification);
+  // FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   runApp(MyApp());
   configLoading();
+}
+
+Future<void> requestPermission() async{
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+NotificationSettings settings = await messaging.requestPermission(
+  alert: true,
+  announcement: false,
+  badge: true,
+  carPlay: false,
+  criticalAlert: false,
+  provisional: false,
+  sound: true,
+);
+
+if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+  print('User granted permission');
+} else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+  print('User granted provisional permission');
+} else {
+  print('User declined or has not accepted permission');
+}
 }
 
 void configLoading() {
@@ -44,7 +74,36 @@ void configLoading() {
     //..customAnimation = CustomAnimation();
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    //ketika notif di klik dan keadaannya terminated
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if(message != null){
+        print(message.data);
+        print(message.notification.title);
+      }
+    });
+
+    //ketika notif di klik dan keadaannya on background
+    FirebaseMessaging.onMessageOpenedApp.listen((event) { });
+
+    //ketika on foreground
+    FirebaseMessaging.onMessage.listen((event) {
+      if (event.notification != null){
+        print(event.notification.title);
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
