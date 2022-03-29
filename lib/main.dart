@@ -14,8 +14,15 @@ import 'package:myklu_flutter/views/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:myklu_flutter/animation/launcher.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
   runApp(MyApp());
   configLoading();
 }
