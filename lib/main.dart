@@ -159,13 +159,16 @@ class _LoginState extends State<Login> {
     String namaAPI = data['nama'];
     String nimAPI = data['nim'];
     String id = data['id'];
+    EasyLoading.show(status: 'loading...');
     if (value == 1) {
       setState(() {
         _loginStatus = LoginStatus.signIn;
         savePref(value, namaAPI, nimAPI, id);
+        EasyLoading.dismiss();
       });
       print(pesan);
     } else {
+      EasyLoading.dismiss();
       _showAlertDialog(context);
     }
   }
@@ -728,7 +731,7 @@ class _MainMenuState extends State<MainMenu> {
                               ),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 5,
                             ),
                             Container(
                               padding: EdgeInsets.all(20),
@@ -742,7 +745,7 @@ class _MainMenuState extends State<MainMenu> {
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 5,
                             )
                           ],
                         ),
@@ -782,7 +785,7 @@ class _MainMenuState extends State<MainMenu> {
                               ),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 5,
                             ),
                             Container(
                               padding: EdgeInsets.all(20),
@@ -796,7 +799,7 @@ class _MainMenuState extends State<MainMenu> {
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 5,
                             )
                           ],
                         ),
@@ -836,7 +839,7 @@ class _MainMenuState extends State<MainMenu> {
                               ),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 5,
                             ),
                             Container(
                               padding: EdgeInsets.all(20),
@@ -850,7 +853,7 @@ class _MainMenuState extends State<MainMenu> {
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 5,
                             )
                           ],
                         ),
@@ -890,7 +893,7 @@ class _MainMenuState extends State<MainMenu> {
                               ),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 5,
                             ),
                             Container(
                               padding: EdgeInsets.all(20),
@@ -904,7 +907,7 @@ class _MainMenuState extends State<MainMenu> {
                               ),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 5,
                             )
                           ],
                         ),
