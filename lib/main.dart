@@ -59,18 +59,19 @@ if (settings.authorizationStatus == AuthorizationStatus.authorized) {
 
 void configLoading() {
   EasyLoading.instance
-    ..displayDuration = const Duration(milliseconds: 2000)
+    ..displayDuration = const Duration(milliseconds: 1500)
     ..indicatorType = EasyLoadingIndicatorType.fadingCircle
-    ..loadingStyle = EasyLoadingStyle.dark
+    ..loadingStyle = EasyLoadingStyle.custom
     ..indicatorSize = 45.0
     ..radius = 10.0
-    ..progressColor = Colors.yellow
-    ..backgroundColor = Colors.green
-    ..indicatorColor = Colors.yellow
-    ..textColor = Colors.yellow
-    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..progressColor = Colors.black
+    ..backgroundColor = Color.fromARGB(255, 76, 78, 77)
+    ..indicatorColor = Colors.white
+    ..textColor = Color.fromARGB(255, 255, 255, 255)
+    ..maskColor = Color.fromARGB(255, 244, 244, 245)
     ..userInteractions = true
-    ..dismissOnTap = false;
+    ..toastPosition = EasyLoadingToastPosition.bottom
+    ..dismissOnTap = true;
     //..customAnimation = CustomAnimation();
 }
 
@@ -161,6 +162,7 @@ class _LoginState extends State<Login> {
     String id = data['id'];
     EasyLoading.show(status: 'loading...');
     if (value == 1) {
+      EasyLoading.showToast('Logged in');
       setState(() {
         _loginStatus = LoginStatus.signIn;
         savePref(value, namaAPI, nimAPI, id);
