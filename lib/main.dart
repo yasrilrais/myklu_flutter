@@ -16,6 +16,9 @@ import 'package:myklu_flutter/animation/launcher.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 
 Future<void> _handleBGNotification(RemoteMessage message) async {
@@ -59,7 +62,7 @@ if (settings.authorizationStatus == AuthorizationStatus.authorized) {
 
 void configLoading() {
   EasyLoading.instance
-    ..displayDuration = const Duration(milliseconds: 1500)
+    ..displayDuration = const Duration(milliseconds: 2000)
     ..indicatorType = EasyLoadingIndicatorType.fadingCircle
     ..loadingStyle = EasyLoadingStyle.custom
     ..indicatorSize = 45.0
@@ -175,24 +178,43 @@ class _LoginState extends State<Login> {
     }
   }
 
+  var alertStyle = AlertStyle(
+      animationType: AnimationType.grow,
+      isCloseButton: false,
+      isOverlayTapDismiss: false,
+      descStyle: TextStyle(fontWeight: FontWeight.normal),
+      descTextAlign: TextAlign.center,
+      animationDuration: Duration(milliseconds: 200),
+      alertBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(0.0),
+        side: BorderSide(
+          color: Colors.grey,
+        ),
+      ),
+      titleStyle: TextStyle(
+        color: Colors.red,
+      ),
+      alertAlignment: Alignment.center,
+    );
+
   _showAlertDialog(BuildContext context) {
-    Widget okButton = TextButton(
-      child: Text("OK"),
-      onPressed: () => Navigator.pop(context),
-    );
-    AlertDialog alert = AlertDialog(
-      title: Text("Warning!"),
-      content: Text("Username atau password salah"),
-      actions: [
-        okButton,
-      ],
-    );
-    showDialog(
+      Alert(
       context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
+      type: AlertType.error,
+      style: alertStyle,
+      title: "Warning!",
+      desc: "Username atau password salah",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "OK",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          width: 120,
+        )
+      ],
+    ).show();
   }
 
   savePref(int value, String nama, String nim, String id) async {
@@ -219,12 +241,14 @@ class _LoginState extends State<Login> {
 
   signOut() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
+    EasyLoading.show(status: 'loading...');
     setState(() {
       preferences.remove("value");
       Navigator.pop(context);
       // ignore: deprecated_member_use
       preferences.commit();
       _loginStatus = LoginStatus.notSignIN;
+      EasyLoading.dismiss();
     });
   }
 
@@ -401,20 +425,22 @@ class _LoginState extends State<Login> {
                               SizedBox(
                                 height: 25,
                               ),
-                              FadeAnimation(
-                                  1.7,
-                                  InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Register()));
-                                      },
-                                      child: Text(
-                                        "Create a new account",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.grey),
-                                      ))),
+                              // FadeAnimation(
+                              //     1.7,
+                              //     InkWell(
+                              //         onTap: () {
+                              //           Navigator.of(context).push(
+                              //               MaterialPageRoute(
+                              //                   builder: (context) =>
+                              //                       Register()));
+                              //         },
+                              //         child: Text(
+                              //           "Create a new account",
+                              //           textAlign: TextAlign.center,
+                              //           style: TextStyle(color: Colors.grey),
+                              //         )
+                              //       )
+                              //     ),
                               SizedBox(
                                 height: 30,
                               ),
