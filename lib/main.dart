@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:myklu_flutter/animation/FadeAnimation.dart';
 import 'package:myklu_flutter/modal/api.dart';
+import 'package:myklu_flutter/utils.dart';
 import 'package:myklu_flutter/views/addcomplaint.dart';
 import 'package:myklu_flutter/views/home.dart';
 import 'package:myklu_flutter/views/notifications.dart';
@@ -84,6 +85,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
   @override
   void initState() {
     // TODO: implement initState
@@ -109,19 +111,19 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SplashScreen(),
-      builder: EasyLoading.init(),
-      theme: ThemeData(
-          primarySwatch: Colors.blueGrey,
-          fontFamily: 'roboto',
-          textSelectionTheme: TextSelectionThemeData(
-            cursorColor: Colors.blueGrey,
-          )),
-      debugShowCheckedModeBanner: false,
+  Widget build(BuildContext context) => OverlaySupport(
+      child: MaterialApp(
+        home: SplashScreen(),
+        builder: EasyLoading.init(),
+        theme: ThemeData(
+            primarySwatch: Colors.blueGrey,
+            fontFamily: 'roboto',
+            textSelectionTheme: TextSelectionThemeData(
+              cursorColor: Colors.blueGrey,
+            )),
+        debugShowCheckedModeBanner: false,
+      ),
     );
-  }
 }
 
 class Login extends StatefulWidget {
@@ -137,6 +139,8 @@ class _LoginState extends State<Login> {
   final _key = new GlobalKey<FormState>();
 
   bool _secureText = true;
+
+  StreamSubscription<ConnectivityResult> subscription;
 
   showHide() {
     setState(() {
@@ -257,6 +261,15 @@ class _LoginState extends State<Login> {
     // TODO: implement initState
     super.initState();
     getPref();
+    subscription =
+        Connectivity().onConnectivityChanged.listen(showConnectivitySnackBar);
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel();
+
+    super.dispose();
   }
 
   @override
@@ -444,35 +457,6 @@ class _LoginState extends State<Login> {
                               SizedBox(
                                 height: 30,
                               ),
-                              // Row(
-                              //   children: <Widget>[
-                              //     Expanded(
-                              //       child: FadeAnimation(1.8, Container(
-                              //         height: 50,
-                              //         decoration: BoxDecoration(
-                              //           borderRadius: BorderRadius.circular(50),
-                              //           color: Colors.blue
-                              //         ),
-                              //         child: Center(
-                              //           child: Text("Facebook", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                              //         ),
-                              //       )),
-                              //     ),
-                              //     SizedBox(width: 30,),
-                              //     Expanded(
-                              //       child: FadeAnimation(1.9, Container(
-                              //         height: 50,
-                              //         decoration: BoxDecoration(
-                              //           borderRadius: BorderRadius.circular(50),
-                              //           color: Colors.black
-                              //         ),
-                              //         child: Center(
-                              //           child: Text("Github", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                              //         ),
-                              //       )),
-                              //     )
-                              //   ],
-                              // )
                             ],
                           ),
                         ),
@@ -489,6 +473,16 @@ class _LoginState extends State<Login> {
         return MainMenu(signOut);
         break;
     }
+  }
+
+    void showConnectivitySnackBar(ConnectivityResult result) {
+    final hasInternet = result != ConnectivityResult.none;
+    final message = hasInternet
+        ? 'You have again ${result.toString()}'
+        : 'You have no internet';
+    final color = hasInternet ? Colors.green : Colors.red;
+
+    Utils.showTopSnackBar(context, message, color);
   }
 }
 
