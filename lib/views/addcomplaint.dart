@@ -207,7 +207,7 @@ class _AddComplaintState extends State<AddComplaint> {
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide:
                                         BorderSide(color: Colors.black54)),
-                                labelText: 'Complaint...',
+                                labelText: 'Description...',
                                 labelStyle: TextStyle(color: Colors.grey)),
                           ),
                         ),
@@ -221,7 +221,7 @@ class _AddComplaintState extends State<AddComplaint> {
                             width: 10.0,
                           ),
                           Text(
-                            "Upload File * :",
+                            "Upload Image * :",
                             textAlign: TextAlign.left,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
