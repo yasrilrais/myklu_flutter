@@ -215,16 +215,46 @@ class _AddComplaintState extends State<AddComplaint> {
                     ),
                     FadeAnimation(
                       0.9,
-                      Row(
+                      Column(
                         children: [
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Text(
+                                "Upload Image",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                " * ",
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                " : ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                           SizedBox(
-                            width: 10.0,
+                            height: 5.0,
                           ),
-                          Text(
-                            "Upload Image * :",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Text(
+                                "(maks. 1 mb)",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontSize: 10.0, color: Colors.grey[700]),
+                              ),
+                            ],
+                          )
                         ],
                       ),
                     ),

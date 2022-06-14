@@ -186,7 +186,7 @@ class _HomeState extends State<Home> {
       ),
       // ----default---- //
       body: RefreshIndicator(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Color(0xfff8f8f8),
         onRefresh: _lihatData,
         key: _refresh,
         child: loading
@@ -257,7 +257,7 @@ class _HomeState extends State<Home> {
                                               EditKeluhan(
                                                   x, _lihatData)));
                                 },
-                                icon: Icon(Icons.message),
+                                icon: Icon(Icons.info_outline),
                                 alignment: Alignment.topRight,
                               ),
                               Visibility(
@@ -271,7 +271,7 @@ class _HomeState extends State<Home> {
                                   ),
                                   alignment: Alignment.bottomRight,
                                 ),
-                                visible: true,
+                                visible: false,
                               ),
                             ],
                           ),

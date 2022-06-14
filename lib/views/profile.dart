@@ -45,7 +45,7 @@ class _ProfileState extends State<Profile> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Logout'),
+            title: Text('Logout', style: TextStyle(fontWeight: FontWeight.bold),),
             content: Text('Are you sure you want to logout?'),
             actions: <Widget>[
               TextButton(

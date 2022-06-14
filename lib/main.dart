@@ -762,7 +762,7 @@ class _MainMenuState extends State<MainMenu> {
                               child: Text(
                                 "Input Complaint",
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 textAlign: TextAlign.center,
@@ -816,7 +816,7 @@ class _MainMenuState extends State<MainMenu> {
                               child: Text(
                                 "My Complaint",
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 textAlign: TextAlign.center,
@@ -870,7 +870,7 @@ class _MainMenuState extends State<MainMenu> {
                               child: Text(
                                 "Profile",
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 textAlign: TextAlign.center,
@@ -924,7 +924,7 @@ class _MainMenuState extends State<MainMenu> {
                               child: Text(
                                 "Notifications",
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 17,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 textAlign: TextAlign.center,
