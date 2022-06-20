@@ -480,7 +480,7 @@ class _LoginState extends State<Login> {
     void showConnectivitySnackBar(ConnectivityResult result) {
     final hasInternet = result != ConnectivityResult.none;
     final message = hasInternet
-        ? 'You have again ${result.toString()}'
+        ? 'Welcome back'
         : 'You have no internet';
     final color = hasInternet ? Colors.green : Colors.red;
 

@@ -8,8 +8,7 @@ class Utils {
     Color color,
   ) =>
       showSimpleNotification(
-        Text('Internet Connectivity Update'),
-        subtitle: Text(message),
+        Text(message),
         background: color,
       );
 }
